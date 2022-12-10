@@ -38,3 +38,8 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   # Data for the plots
+  co2_data <- read.csv("owid-co2-data.csv")
+  
+  # Generate the plots
+  output$plot <- renderPlotly({
+    plot_ly(co2_data, x = ~year, y = ~input$variable, type = "sc
