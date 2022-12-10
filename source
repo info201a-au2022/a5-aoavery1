@@ -5,9 +5,9 @@ library(plotly)
 library(rsconnect)
 
 # Set the account info
-rsconnect::setAccountInfo(name = "aoavery1",
-                          token = "3BE44BA0372B6F76A484F23D81C06BE9",
-                          secret = "<SECRET>")
+rsconnect::setAccountInfo(name='aoavery1',
+			  token='3BE44BA0372B6F76A484F23D81C06BE9',
+			  secret='7Bhb1KQFwf7keg+nBjRZJf33szHRgBFQpgNw+LNY')
 
 # Check the account info
 rsconnect::accountInfo()
