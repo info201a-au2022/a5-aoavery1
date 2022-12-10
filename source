@@ -1,0 +1,57 @@
+# Load the required packages
+library(shiny)
+library(rmarkdown)
+library(plotly)
+library(rsconnect)
+
+# Set the account information for Shiny Connect
+rsconnect::setAccountInfo(name='aoavery1',
+                          token='3BE44BA0372B6F76A484F23D81C06BE9',
+                          secret='<SECRET>')
+
+# Define the Shiny app
+ui <- fluidPage(
+  
+  # Title and introduction
+  titlePanel("Exploring CO2 Emissions Data"),
+  p("This Shiny application allows users to explore data about CO2 emissions."),
+  
+  # Tabset panel for the two pages
+  tabsetPanel(
+    
+    # First page
+    tabPanel("Introduction",
+      p("This page introduces the topic of CO2 emissions and provides some relevant values of interest."),
+      p("The data used in this application includes CO2 emissions and per capita CO2 emissions for different countries and years."),
+      p("The average CO2 emissions across all countries in the current year is [insert average value here]."),
+      p("The country with the highest CO2 emissions is [insert country here]."),
+      p("The country with the lowest CO2 emissions is [insert country here]."),
+      p("CO2 emissions have [increased/decreased] by [insert amount here] over the last N years.")
+    ),
+    
+    # Second page
+    tabPanel("Interactive Visualization",
+      # Inputs and outputs for page 2
+      selectInput("variable", "Variable:", 
+                  c("CO2 emissions" = "co2", 
+                    "Per capita CO2 emissions" = "per_capita_co2")),
+      selectInput("year", "Year:", 1990:2022),
+      plotlyOutput("plot")
+    )
+  )
+)
+
+server <- function(input, output) {
+  
+  # Data for the plots
+  co2_data <- read.csv("owid-co2-data.csv")
+  
+  # Generate the plots
+  output$plot <- renderPlotly({
+    plot_ly(co2_data, x = ~year, y = ~input$variable, type = "scatter", mode = "lines") %>%
+      layout(title = "CO2 emissions over time")
+  })
+}
+
+# Run the Shiny app
+shinyApp(ui, server)
