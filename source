@@ -2,12 +2,6 @@
 library(shiny)
 library(rmarkdown)
 library(plotly)
-library(rsconnect)
-
-# Set the account information for Shiny Connect
-rsconnect::setAccountInfo(name='aoavery1',
-                          token='3BE44BA0372B6F76A484F23D81C06BE9',
-                          secret='<SECRET>')
 
 # Define the Shiny app
 ui <- fluidPage(
@@ -44,14 +38,3 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   # Data for the plots
-  co2_data <- read.csv("owid-co2-data.csv")
-  
-  # Generate the plots
-  output$plot <- renderPlotly({
-    plot_ly(co2_data, x = ~year, y = ~input$variable, type = "scatter", mode = "lines") %>%
-      layout(title = "CO2 emissions over time")
-  })
-}
-
-# Run the Shiny app
-shinyApp(ui, server)
